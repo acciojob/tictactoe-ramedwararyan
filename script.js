@@ -1,7 +1,7 @@
 // Get references to HTML elements
 const submitBtn = document.getElementById("submit");
-const player1Input = document.getElementById("player-1");
-const player2Input = document.getElementById("player-2");
+const player1Input = document.getElementById("player1");
+const player2Input = document.getElementById("player2");
 const formDiv = document.querySelector(".player-input");
 const gameDiv = document.getElementById("game");
 const messageDiv = document.querySelector(".message");
