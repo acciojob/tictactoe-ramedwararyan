@@ -1,76 +1,72 @@
-// Get references to HTML elements
-const submitBtn = document.getElementById("submit");
-const player1Input = document.getElementById("player1");
-const player2Input = document.getElementById("player2");
-const formDiv = document.querySelector(".player-input");
-const gameDiv = document.getElementById("game");
-const messageDiv = document.querySelector(".message");
-const cells = document.querySelectorAll(".cell");
+ const submitBtn = document.getElementById("submit");
+    const board = document.getElementById("board");
+    const messageDiv = document.querySelector(".message");
+    const gameTitle = document.getElementById("game-title");
 
-// Initialize game variables
-let player1 = "";
-let player2 = "";
-let currentPlayer = "";
-let board = Array(9).fill(null);
-let gameActive = true;
+    let player1 = "";
+    let player2 = "";
+    let currentPlayer = "";
+    let currentSymbol = "X";
+    let gameActive = true;
+    const boardState = Array(9).fill("");
 
-// Winning patterns
-const winPatterns = [
-    [0, 1, 2], [3, 4, 5], [6, 7, 8],  // Rows
-    [0, 3, 6], [1, 4, 7], [2, 5, 8],  // Columns
-    [0, 4, 8], [2, 4, 6]               // Diagonals
-];
+    // Winning combinations
+    const winningConditions = [
+      [0,1,2], [3,4,5], [6,7,8],  // rows
+      [0,3,6], [1,4,7], [2,5,8],  // cols
+      [0,4,8], [2,4,6]            // diagonals
+    ];
 
-// Handle the form submission to start the game
-submitBtn.addEventListener("click", () => {
-    player1 = player1Input.value.trim();
-    player2 = player2Input.value.trim();
+    // Handle submit
+    submitBtn.addEventListener("click", () => {
+      player1 = document.getElementById("player-1").value || "Player 1";
+      player2 = document.getElementById("player-2").value || "Player 2";
+      currentPlayer = player1;
+      currentSymbol = "X";
+      messageDiv.textContent = `${currentPlayer}, you're up!`;
 
-    // Check if both player names are entered
-    if (player1 === "" || player2 === "") {
-        alert("Please enter both player names!");
+      // Hide form & show board
+      document.getElementById("player-form").style.display = "none";
+      gameTitle.style.display = "block";
+      board.style.display = "grid";
+
+      // Render board cells
+      for (let i = 0; i < 9; i++) {
+        const cell = document.createElement("div");
+        cell.classList.add("cell");
+        cell.setAttribute("id", i+1);
+        cell.addEventListener("click", () => handleCellClick(cell, i));
+        board.appendChild(cell);
+      }
+    });
+
+    function handleCellClick(cell, index) {
+      if (boardState[index] !== "" || !gameActive) return;
+
+      // Update cell
+      boardState[index] = currentSymbol;
+      cell.textContent = currentSymbol;
+
+      // Check win
+      if (checkWin()) {
+        messageDiv.textContent = `${currentPlayer}, congratulations you won!`;
+        gameActive = false;
         return;
+      }
+
+      // Switch player
+      if (currentPlayer === player1) {
+        currentPlayer = player2;
+        currentSymbol = "O";
+      } else {
+        currentPlayer = player1;
+        currentSymbol = "X";
+      }
+      messageDiv.textContent = `${currentPlayer}, you're up!`;
     }
 
-    // Hide the input form and show the game board
-    formDiv.style.display = "none";
-    gameDiv.style.display = "block";
-
-    // Set the first player and update the message
-    currentPlayer = player1;
-    messageDiv.textContent = `${currentPlayer}, you're up!`;
-});
-
-// Handle cell clicks
-cells.forEach((cell, index) => {
-    cell.addEventListener("click", () => {
-        // Check if the game is active and the cell is empty
-        if (!gameActive || board[index] !== null) return;
-
-        // Update the board and cell display
-        board[index] = currentPlayer === player1 ? "X" : "O";
-        cell.textContent = board[index];
-
-        // Check for a winner
-        if (checkWinner()) {
-            messageDiv.textContent = `${currentPlayer}, congratulations you won!`;
-            gameActive = false;
-        } else if (board.every(val => val !== null)) {
-            // Check for a draw
-            messageDiv.textContent = "It's a draw!";
-            gameActive = false;
-        } else {
-            // Switch players
-            currentPlayer = currentPlayer === player1 ? player2 : player1;
-            messageDiv.textContent = `${currentPlayer}, you're up!`;
-        }
-    });
-});
-
-// Function to check for a winner
-function checkWinner() {
-    return winPatterns.some(pattern => {
-        const [a, b, c] = pattern;
-        return board[a] && board[a] === board[b] && board[a] === board[c];
-    });
-}
+    function checkWin() {
+      return winningConditions.some(comb => {
+        return comb.every(index => boardState[index] === currentSymbol);
+      });
+    }
