@@ -19,8 +19,8 @@
 
     // Handle submit
     submitBtn.addEventListener("click", () => {
-      player1 = document.getElementById("player-1").value || "Player 1";
-      player2 = document.getElementById("player-2").value || "Player 2";
+      player1 = document.getElementById("player1").value || "Player 1";
+      player2 = document.getElementById("player2").value || "Player 2";
       currentPlayer = player1;
       currentSymbol = "X";
       messageDiv.textContent = `${currentPlayer}, you're up!`;
@@ -57,10 +57,10 @@
       // Switch player
       if (currentPlayer === player1) {
         currentPlayer = player2;
-        currentSymbol = "O";
+        currentSymbol = "o";
       } else {
         currentPlayer = player1;
-        currentSymbol = "X";
+        currentSymbol = "x";
       }
       messageDiv.textContent = `${currentPlayer}, you're up!`;
     }
