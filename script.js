@@ -6,7 +6,7 @@
     let player1 = "";
     let player2 = "";
     let currentPlayer = "";
-    let currentSymbol = "X";
+    let currentSymbol = "x";
     let gameActive = true;
     const boardState = Array(9).fill("");
 
@@ -22,7 +22,7 @@
       player1 = document.getElementById("player1").value || "Player 1";
       player2 = document.getElementById("player2").value || "Player 2";
       currentPlayer = player1;
-      currentSymbol = "X";
+      currentSymbol = "x";
       messageDiv.textContent = `${currentPlayer}, you're up!`;
 
       // Hide form & show board
