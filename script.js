@@ -49,7 +49,7 @@
 
       // Check win
       if (checkWin()) {
-        messageDiv.textContent = `${currentPlayer}, congratulations you won!`;
+        messageDiv.textContent = `${currentPlayer} congratulations you won!`;
         gameActive = false;
         return;
       }
@@ -62,7 +62,7 @@
         currentPlayer = player1;
         currentSymbol = "x";
       }
-      messageDiv.textContent = `${currentPlayer} you're up!`;
+      messageDiv.textContent = `${currentPlayer}, you're up!`;
     }
 
     function checkWin() {
