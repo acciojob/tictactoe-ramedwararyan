@@ -62,7 +62,7 @@
         currentPlayer = player1;
         currentSymbol = "x";
       }
-      messageDiv.textContent = `${currentPlayer}, you're up!`;
+      messageDiv.textContent = `${currentPlayer} you're up!`;
     }
 
     function checkWin() {
